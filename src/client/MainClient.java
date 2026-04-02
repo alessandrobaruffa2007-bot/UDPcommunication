@@ -9,27 +9,23 @@ public class MainClient {
 
         try {
 
-            InetAddress serverAddress = InetAddress.getLocalHost();
+            InetAddress serverAddress = InetAddress.getLocalHost(); // trova indirrizzo server
             int port = 3000;
 
-            DatagramSocket socket = new DatagramSocket();
-            Scanner scanner = new Scanner(System.in);
+            DatagramSocket socket = new DatagramSocket(); //crea il socket(il ponte) dove inviare i pacchetti
+            Scanner scanner = new Scanner(System.in); // ti permette di scrivere con la tastiera
 
             while (true) {
 
                 System.out.print("Scrivi un messaggio: ");
                 String message = scanner.nextLine();
 
-                if (message.equalsIgnoreCase("exit")) {
-                    break;
-                }
 
                 // invio messaggio
-                byte[] bufferOut = message.getBytes();
-                DatagramPacket outPacket =
-                        new DatagramPacket(bufferOut, bufferOut.length, serverAddress, port);
+                byte[] bufferOut = message.getBytes(); // serializzazione
+                DatagramPacket outPacket = new DatagramPacket(bufferOut, bufferOut.length, serverAddress, port); // crea un nuovo paccchetto per l'invio del  messaggio
 
-                socket.send(outPacket);
+                socket.send(outPacket); // invia il messaggio all'indirizzo e la porta
 
                 // buffer per risposta
                 byte[] bufferIn = new byte[256];
@@ -45,8 +41,6 @@ public class MainClient {
                 System.out.println("Risposta del server: " + response);
             }
 
-            socket.close();
-            scanner.close();
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
